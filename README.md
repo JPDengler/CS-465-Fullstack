@@ -54,9 +54,3 @@ Dynamic JSON data was fetched via the `fs` module in Node.js and rendered using 
 - **JSON** for data storage
 - **HTML/CSS** for design
 
----
-
-## Future Enhancements
-- Add additional interactivity for hover effects and animations.
-- Expand JSON data to include more items for Travel, Meals, and Rooms.
-- Implement additional features like a **Contact Form** or **Search Functionality**.
