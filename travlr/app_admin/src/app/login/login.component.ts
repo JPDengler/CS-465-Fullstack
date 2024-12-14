@@ -10,13 +10,11 @@ import { User } from '../models/users';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'], // Fixed 'styleUrl' to 'styleUrls'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public formError: string = '';
-  submitted = false;
   credentials = {
-    name: '',
     email: '',
     password: '',
   };
@@ -30,36 +28,31 @@ export class LoginComponent {
 
   public onLoginSubmit(): void {
     this.formError = '';
-    if (
-      !this.credentials.email ||
-      !this.credentials.password ||
-      !this.credentials.name
-    ) {
-      this.formError = 'All fields are required, please try again';
-      this.router.navigateByUrl('#'); // Return to login page
-    } else {
-      this.doLogin();
+    if (!this.credentials.email || !this.credentials.password) {
+      this.formError = 'Email and password are required. Please try again.';
+      return;
     }
+    this.doLogin();
   }
 
   private doLogin(): void {
-    let newUser = {
-      name: this.credentials.name,
+    const user: User = {
       email: this.credentials.email,
-    } as User;
-    // console.log('LoginComponent::doLogin');
-    // console.log(this.credentials);
-    this.authenticationService.login(newUser, this.credentials.password);
-    if (this.authenticationService.isLoggedIn()) {
-      // console.log('Router::Direct');
-      this.router.navigate(['']);
-    } else {
-      var timer = setTimeout(() => {
+      name: '', // Optional if not required by your backend
+    };
+
+    this.authenticationService.login(user, this.credentials.password).subscribe({
+      next: () => {
         if (this.authenticationService.isLoggedIn()) {
-          // console.log('Router::Pause');
-          this.router.navigate(['']);
+          this.router.navigate(['']); // Navigate to the home page
+        } else {
+          this.formError = 'Login failed. Please check your credentials.';
         }
-      }, 3000);
-    }
+      },
+      error: (err: any) => {
+        console.error('Login failed:', err);
+        this.formError = 'An error occurred during login. Please try again.';
+      },
+    });
   }
 }

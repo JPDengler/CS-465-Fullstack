@@ -6,21 +6,14 @@
           {{ formError }}
         </div>
         <div class="form-group">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            [(ngModel)]="credentials.name"
-          />
-        </div>
-        <div class="form-group">
           <label for="email">Email Address</label>
           <input
             type="email"
             name="email"
             placeholder="Enter email address"
             [(ngModel)]="credentials.email"
+            required
+            class="form-control"
           />
         </div>
         <div class="form-group">
@@ -32,6 +25,7 @@
             name="password"
             placeholder="e.g 12+ alphanumerics"
             [(ngModel)]="credentials.password"
+            required
           />
         </div>
   
@@ -41,3 +35,4 @@
       </form>
     </div>
   </div>
+  

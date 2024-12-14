@@ -3,6 +3,8 @@ import { BROWSER_STORAGE } from '../storage';
 import { User } from '../models/users';
 import { AuthResponse } from '../models/authresponse';
 import { TripDataService } from '../services/trip-data.service';
+import { Observable } from 'rxjs'; // Import Observable
+import { tap } from 'rxjs/operators'; // Import tap
 
 @Injectable({
   providedIn: 'root',
@@ -43,16 +45,13 @@ export class AuthenticationService {
     return { email, name } as User;
   }
 
-  public login(user: User, passwd: string): void {
-    this.tripDataService.login(user, passwd).subscribe({
-      next: (value: AuthResponse) => {
+  public login(user: User, passwd: string): Observable<AuthResponse> {
+    return this.tripDataService.login(user, passwd).pipe(
+      tap((value: AuthResponse) => {
         this.authResp = value;
         this.saveToken(this.authResp.token);
-      },
-      error: (error) => {
-        console.error('Login error:', error);
-      },
-    });
+      })
+    );
   }
 
   public register(user: User, passwd: string): void {
@@ -62,7 +61,7 @@ export class AuthenticationService {
         this.saveToken(this.authResp.token);
       },
       error: (error) => {
-        console.error('Register error:', error);
+        console.error('Register error:', error.message);
       },
     });
   }
