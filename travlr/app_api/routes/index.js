@@ -1,19 +1,28 @@
-const express = require('express'); // Express app
-const router = express.Router(); // Router logic
+const express = require("express");
+const router = express.Router();
+const { expressjwt: jwt } = require("express-jwt"); // Correct import
+const tripsController = require("../controllers/trips");
+const authController = require("../controllers/authentication");
 
-// This is where we import the controllers we will route
-const tripsController = require('../controllers/trips');
+const auth = jwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"], // Required for express-jwt
+  userProperty: "auth", // Attach decoded payload to req.auth
+});
 
-// Define routes for our trips endpoint
+// Authentication Routes
+router.route("/register").post(authController.register);
+router.route("/login").post(authController.login);
+
+// Trip Routes
 router
-    .route('/trips')
-    .get(tripsController.tripsList) // GET Method routes tripsList
-    .post(tripsController.tripsAddTrip); // POST Method Adds a Trip
+  .route("/trips")
+  .get(tripsController.tripsList)
+  .post(auth, tripsController.tripsAddTrip);
 
-// GET and PUT Method routes tripsFindByCode and tripsUpdateTrip - requires parameter
 router
-    .route('/trips/:tripCode')
-    .get(tripsController.tripsFindByCode) // GET Method to find trip by code
-    .put(tripsController.tripsUpdateTrip); // PUT Method updates a trip
+  .route("/trips/:tripCode")
+  .get(tripsController.tripsFindByCode)
+  .put(auth, tripsController.tripsUpdateTrip);
 
 module.exports = router;
