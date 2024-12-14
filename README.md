@@ -1,116 +1,170 @@
-# CS-465 Fullstack - Module 6: Full-Stack Integration with Add/Edit Functionality
+### Travlr Getaways Admin - Module 7 Branch
 
-This branch includes the completed work for Module 6, focusing on integrating full-stack functionality into the **Travlr Getaways** application. New features include adding trips, editing existing trips, and connecting the Angular front-end to the Express/MongoDB backend via a RESTful API.
+This repository contains the Travlr Getaways Admin application, now updated with secure login authentication and admin-only CRUD functionality. The work in this branch reflects the requirements of CS 465 Module Seven Assignment.
 
----
-## Features Implemented
+* * * * *
 
-1. **Add Trip Functionality**
-   - Created a new Angular `add-trip` component.
-   - Implemented a form for adding new trips with fields for:
-     - Code
-     - Name
-     - Length
-     - Start date
-     - Resort
-     - Per person price
-     - Image name
-     - Description
-   - Connected the form to the backend `POST /api/trips` API endpoint via the `TripDataService`.
+### Table of Contents
 
-2. **Edit Trip Functionality**
-   - Added an `edit-trip` component in Angular to edit existing trips.
-   - Prepopulated the form with existing trip data by fetching it using the `GET /api/trips/:tripCode` endpoint.
-   - Updated the trip using the `PUT /api/trips/:tripCode` API endpoint.
+1.  Project Overview
+2.  Features
+3.  Technologies Used
+4.  Setup Instructions
+5.  Screenshots
+6.  API Testing
 
-3. **Trip Card Updates**
-   - Modified the `trip-card` component to include an "Edit Trip" button.
-   - Clicking the button routes to the `edit-trip` component with the specific trip code stored in local storage.
+* * * * *
 
-4. **Backend Enhancements**
-   - Added a `tripsUpdateTrip` method in `app_api/controllers/trips.js` to handle updating trips.
-   - Updated routes in `app_api/routes/index.js` to include the `PUT` endpoint for updating trips.
-   - Configured CORS in `app.js` to allow `PUT` HTTP methods.
+### 1\. Project Overview
 
-5. **Improved Routing**
-   - Updated `app.routes.ts` to include routes for the `add-trip` and `edit-trip` components.
+The **Travlr Getaways Admin** is a full stack web application that provides an admin interface for managing trips. This module adds a security layer with login authentication, protecting admin endpoints and ensuring secure access to CRUD functionality.
 
-6. **Enhanced Trip Listing**
-   - Updated the `trip-listing` component to dynamically fetch trips from the backend and display them in a card format.
-   - Included detailed trip information such as resort name, price, and duration.
+**Key updates in this module:**
 
----
-## How to Use
+-   Secure login form with JWT-based authentication.
+-   Protected admin-only features such as adding and editing trips.
+-   Refactored frontend and backend to incorporate the security protocol.
 
-### Setup
-1. Clone the repository and switch to the `module6` branch:
-   ```bash
-   git clone https://github.com/JPDengler/CS-465-Fullstack.git
-   cd CS-465-Fullstack
-   git checkout module6
+* * * * *
+
+### 2\. Features
+
+#### Frontend:
+
+-   **Admin Login Form**:
+    -   Includes email and password fields for authentication.
+-   **Conditional Rendering**:
+    -   Admin-only features (e.g., Edit and Add Trip buttons) appear only after logging in.
+-   **CRUD Operations**:
+    -   Add Trip: Accessible after login.
+    -   Edit Trip: Available for logged-in users.
+    -   Logout functionality.
+
+#### Backend:
+
+-   **JWT-based Authentication**:
+    -   Protects endpoints with token validation middleware.
+-   **Secured API Endpoints**:
+    -   Authentication ensures access to routes like `/api/trips` and `/api/login`.
+-   **New Login Endpoint**:
+    -   Handles user authentication and token generation.
+
+* * * * *
+
+### 3\. Technologies Used
+
+#### Frontend:
+
+-   Angular
+-   Angular Router
+-   Angular Forms
+-   Bootstrap for styling
+
+#### Backend:
+
+-   Node.js
+-   Express.js
+-   Mongoose (MongoDB ODM)
+-   JSON Web Token (JWT)
+
+#### Testing Tools:
+
+-   Postman for API testing
+-   MongoDB as the database
+
+* * * * *
+
+### 4\. Setup Instructions
+
+1.  **Prerequisites**:
+
+    -   Install [Node.js](https://nodejs.org/) and `npm`.
+    -   Install [MongoDB](https://www.mongodb.com/) and ensure it is running.
+2.  **Install dependencies**: Navigate to the root directory of the project and install the backend dependencies:
+    `npm install`
+
+3.  **Set up environment variables**: Create a `.env` file in the root of the project and add the following:
+    `MONGO_URI=<your-mongodb-connection-string>
+    JWT_SECRET=<your-secret-key>
+    PORT=3000`
+
+4.  **Start the server**: Run the following command in the root directory to start the backend server:
+    `npm start`
+
+5.  **Install frontend dependencies**: Navigate to the `app_admin` directory and install the Angular dependencies:
+    `cd app_admin
+    npm install`
+
+6.  **Start the Angular frontend**: Launch the frontend development server:
+    `ng serve`
+
+7.  **Access the application**:
+
+    -   Open the frontend in your browser at: `http://localhost:4200`
+    -   Access the backend API at: `http://localhost:3000`
+
+* * * * *
+
+### 5\. Screenshots
+
+-   **Main Dashboard**\
+![Main Page](https://github.com/user-attachments/assets/c8710d18-5c8d-46e0-875d-fe3d9f0d6e19)
+
+-   **Login Page**\
+![Login Page](https://github.com/user-attachments/assets/19c42805-94ea-4afa-81b1-6015b81b9246)
+
+
+-   **Successful Login**\
+![Succesful Login Page](https://github.com/user-attachments/assets/445bfd6e-1d38-45e4-a6a0-24542a28c202)
+
+
+* * * * *
+
+### 6\. API Testing
+
+#### Endpoints:
+
+1.  `POST /api/login`:
+
+    -   **Description**: Authenticate admin users and retrieve a JWT.
+    -   **Sample Payload**:
+        `{
+          "email": "testuser@example.com",
+          "password": "password123"
+        }`
+
+2.  `GET /api/trips`:
+
+    -   **Description**: Retrieve all trips.
+    -   **Authentication**: Requires JWT in the `Authorization` header.
+3.  `POST /api/trips`:
+
+    -   **Description**: Add a new trip.
+    -   **Authentication**: Requires JWT in the `Authorization` header.
+    -   **Sample Payload**:
+        `{
+          "name": "New Trip",
+          "resort": "Example Resort",
+          "length": "5 days",
+          "perPerson": 1200.00,
+          "description": "An exciting adventure.",
+          "image": "trip-image.jpg"
+        }`
+
+4.  `PUT /api/trips/:id`:
+    -   **Description**: Update a trip by ID.
+    -   **Authentication**: Requires JWT in the `Authorization` header.
    
-2. Install Dependencies
-   - Install Node.js and Angular dependencies:
-     ```bash
-     npm install
-     ```
+5.  `DELETE /api/trips/:id`:
 
-3. Start Backend Server
-   - Run the backend server:
-     ```bash
-     npm start
-     ```
+    -   **Description**: Delete a trip by ID.
+    -   **Authentication**: Requires JWT in the `Authorization` header.
 
-4. Start Angular Frontend
-   - Run the Angular development server:
-     ```bash
-     ng serve
-     ```
+#### Testing Instructions:
 
-5. Access the Application
-   - Open the application in your browser at:
-     ```
-     http://localhost:4200
-     ```
-
-### Adding a Trip
-1. Navigate to the "Add Trip" page.
-2. Fill out the form with trip details.
-3. Click the "Save" button to add the trip to the database.
-
-### Editing a Trip
-1. Click the "Edit Trip" button on a trip card in the listing.
-2. Update the fields in the prepopulated form.
-3. Click "Save" to commit the changes.
-
-### Viewing Trips
-- View all trips on the home page in a card layout.
-
----
-## API Endpoints
-
-- **GET** `/api/trips` - Retrieve all trips.
-- **GET** `/api/trips/:tripCode` - Retrieve a specific trip by its code.
-- **POST** `/api/trips` - Add a new trip.
-- **PUT** `/api/trips/:tripCode` - Update an existing trip by its code.
-
----
-## Screenshots
-
-1. **Trip Listing Page**
-   ![Trip Listing Page](./Added%20-%20Edited%20new%20Trip.png)
-
-2. **Add Trip Page**
-   ![Add Trip Page](./AddTrip%20Page.png)
-
-3. **Edit Trip Page**
-   ![Edit Trip Page](./EditTrip%20Page.png)
-
----
-## About the Project
-
-This module enhances the **Travlr Getaways** application by implementing full-stack features, integrating Angular forms with RESTful APIs, and building a robust workflow for creating and updating trips. These improvements strengthen the application’s usability and set the stage for future enhancements.
-
----
-
-
+-   Open Postman or your preferred API testing tool.
+-   Test the `POST /api/login` endpoint with the following credentials:
+    -   **Email**: `testuser@example.com`
+    -   **Password**: `password123`
+-   Use the returned JWT to authenticate requests to protected endpoints. Add the token to the `Authorization` header:
+    `Authorization: Bearer <JWT>`
