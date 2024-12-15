@@ -210,5 +210,5 @@ Testing
 Acknowledgments
 ---------------
 
-This project was completed as part of **CS 465: Full Stack Development II** at **Southern New Hampshire University**.\
+This project was completed as part of **CS 465: Full Stack Development** at **Southern New Hampshire University**.\
 Special thanks to the instructors especially Prof. Chipman and course materials for guidance throughout the project.
