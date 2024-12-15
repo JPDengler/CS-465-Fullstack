@@ -1,7 +1,9 @@
 # Travlr Getaways 
 
 
-![GetawayGif](https://github.com/user-attachments/assets/a4bf15f0-18f5-4a23-9fdc-de7e9f93619a)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a4bf15f0-18f5-4a23-9fdc-de7e9f93619a" alt="GetawayGif">
+</div>
 
 #
 
